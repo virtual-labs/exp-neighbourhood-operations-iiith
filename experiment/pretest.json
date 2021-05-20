@@ -1,18 +1,38 @@
 [
-{"question":"This is a Sample Question 1?",
+{"question":"1. After performing a filtering operation, the size of the input and output images will",
 "answers":{
-            "a":"answer1",
-            "b":"answer2",
-            "c":"answer3",
-            "d":"answer4"
+            "a":"Remain the same",
+            "b":"Be different",
+            "c":"Depends on filter type",
+            "d":"Cannot say"
           },
 "correctAnswer":"a"},
-{"question":"This is a Sample Question 2?",
+
+{"question":"2. If the size of an averaging filter (window) is increased the processed image will be",
 "answers":{
-            "a":"answer1",
-            "b":"answer2",
-            "c":"answer3",
-            "d":"answer4"
+            "a":"Sharper",
+            "b":"Smoother",
+            "c":"Brighter",
+            "d":"Darker"
           },
-"correctAnswer":"c"} 
+"correctAnswer":"c"},
+
+{"question":"3. Which of the following filter is non-linear filter ",
+"answers":{
+            "a":"Gaussian filter",
+            "b":"Average filter",
+            "c":"Median filter",
+            "d":"Triangular filter"
+          },
+"correctAnswer":"a"},
+
+{"question":"4. Key characteristic of low pass filter is",
+"answers":{
+            "a":"All filter coefficients are greater than zero",
+            "b":"All filter coefficients are less than zero",
+            "c":"Some filter coefficients are greater than zero",
+            "d":"Some filter coefficients are less than zero"
+          },
+"correctAnswer":"c"}
+ 
 ]
