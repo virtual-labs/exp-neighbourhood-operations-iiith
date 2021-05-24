@@ -17,7 +17,7 @@
           },
 "correctAnswer":"c"},
 
-{"question":"3. Which of the following filter is non-linear filter ",
+{"question":"3. Which of the following filter is non-linear filter",
 "answers":{
             "a":"Gaussian filter",
             "b":"Average filter",
