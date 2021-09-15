@@ -14,9 +14,7 @@ w is a window function which in practice is in the form of a matrix of size s x 
 
 An example of 3x3 w(x,y) is shown below.
 
-            |w(-1,-1)| 	w(-1,0)|w(-1,1)|
-            |w(0,-1) |	w(0,0) |w(0,1) |
-            |w(1,-1) |	w(1,0) |w(1,1) |
+<img src="images/table.png">
 
 An example of convolution operation is shown below:
 
