@@ -1,18 +1,19 @@
 [
-{"question":"This is a Sample Question 1?",
+{"question":"1. After performing a filtering operation, the size of the input and output images will",
 "answers":{
-            "a":"answer1",
-            "b":"answer2",
-            "c":"answer3",
-            "d":"answer4"
+            "a":"Remain the same",
+            "b":"Be different",
+            "c":"Depends on filter type",
+            "d":"Cannot say"
           },
 "correctAnswer":"a"},
-{"question":"This is a Sample Question 2?",
+
+{"question":"2. If the size of an averaging filter (window) is increased the processed image will be",
 "answers":{
-            "a":"answer1",
-            "b":"answer2",
-            "c":"answer3",
-            "d":"answer4"
+            "a":"Sharper",
+            "b":"Smoother",
+            "c":"Brighter",
+            "d":"Darker"
           },
 "correctAnswer":"c"} 
 ]
