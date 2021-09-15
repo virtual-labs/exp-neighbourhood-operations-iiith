@@ -1,7 +1,7 @@
-The experiment is designed to understand and learn the Neighborhood operations  in images. This experiment consists of two experiments
+The experiment is designed to understand and learn the Neighborhood operations  in images. This experiment consists of two experiments  
 
-a. Linear filtering
-b. Non-linear filtering
+a. Linear filtering  
+b. Non-linear filtering  
 
 Steps to run the experiments
       
