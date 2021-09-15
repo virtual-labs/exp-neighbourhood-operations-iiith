@@ -15,7 +15,7 @@ Steps to run the experiments
     b. For Non-linear filtering select one option
        1. Median filter
        2. Unsharp filter
-  3. Select one option from ‘Neighborhood size’
+  3. Select one option from 'Neighborhood size'
   4. Select run option to perform the operations
     a. Output result will be displayed in the output panel
 
