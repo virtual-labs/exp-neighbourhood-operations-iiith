@@ -45,7 +45,7 @@ H<sub>N</sub> can also be a nonlinear operator. An example is one which performs
 1. Median filter: The operator HN computes the median of the set of grey values in the neighborhood of the current pixel in f(x,y). This is found by performing a sorting operation at every location (x,y) in f(x,y).
 2. Unsharp Masking filter: This is another example of nonlinear filtering. Here, the aim is to highlight the details. This operation is given by
 
-<img src="images/image006.gif">Where <img  src="neigh/image007.gif"> is the result of applying an averaging filter (ex. Gaussian) to the input f(x,y) and a < 1 is a constant. Note that if a =1 then we have an operation that will retain only the details in the image.
+<img src="images/image006.gif"> Where <img src="images/image007.gif"> is the result of applying an averaging filter (ex. Gaussian) to the input f(x,y) and a < 1 is a constant. Note that if a =1 then we have an operation that will retain only the details in the image.
 
 **Implementation Issues**
 
