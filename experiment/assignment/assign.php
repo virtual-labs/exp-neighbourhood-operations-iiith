@@ -62,7 +62,7 @@ at http://jquery.com
 <li><sel><a href="#" target="_self" >Assessment</a>
 </sel>
 		 		<ul>
-					<li><a href="quiz.php?exp=<?php echo $exp; ?>">Quiz</a></li> -->
+					<li><a href="quiz.php?exp=<?php echo $exp; ?>">Quiz</a></li> 
 					<li><a href="assign.php?exp=<?php echo $exp; ?>">Assignment</a></li>
 			  </ul>
 
