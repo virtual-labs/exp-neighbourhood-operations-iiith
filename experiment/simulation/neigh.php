@@ -1,6 +1,7 @@
 <?php
 session_start();
-
+$_GET["exp"]="neigh";
+$_SESSION["piping"]=1;
 if($_GET["exp"]!="piping") {
 if(isset($_GET["source"]) && isset($_GET["id"])) {
 $_SESSION["currentS"]=$_GET["source"];
