@@ -116,6 +116,11 @@
             blinker(10)
             break
           case 1:
+            if (assess) {
+              loadImage('images/assess/neigh1_1.png').then((cImage) => {
+                croppedImage = cImage
+              })
+            }
             $('#nextBox').html(
               "Select appropriate parameters and click on 'Run'."
             )
