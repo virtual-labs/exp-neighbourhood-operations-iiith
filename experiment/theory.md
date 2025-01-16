@@ -36,8 +36,6 @@ Note that w(0,0) is the coefficient or weight of the window function at the cent
 
     <img src="images/image005.jpg">
 
-Nonlinear Operations:
-
 **Nonlinear Operations:**
 
 H<sub>N</sub> can also be a nonlinear operator. An example is one which performs a ranking operation. Such operations cannot be represented as a convolution between f(x,y) and a window function as in the case of linear operations.
@@ -47,15 +45,19 @@ H<sub>N</sub> can also be a nonlinear operator. An example is one which performs
 2. Unsharp Masking filter: This is another example of nonlinear filtering. Here, the aim is to highlight the details. This operation is given by
 
 <!-- <img src="images/image006.gif">  <img src="images/image007.gif">  -->
-f<sub>s</sub>(x, y) = f(x, y) - f̂(x, y) Where f̂(x, y) is the result of applying an averaging filter (ex. Gaussian) to the input f(x,y) and a < 1 is a constant. Note that if a =1 then we have an operation that will retain only the details in the image.
+<div style="margin-left:405px; font-size: 30px; align-items:center"> f<sub>s</sub>(x, y) = f(x, y) - f̂(x, y) </div> <br>
+<div style="margin-left:405px; font-size: 20px; align-items:center">
+Where f̂(x, y) is the result of applying an averaging filter (ex. Gaussian) to the input f(x,y) and a < 1 is a constant. <br>
+Note that if a =1 then we have an operation that will retain only the details in the image.
+</div>
 
 **Implementation Issues**
 
 When a pixel lies in the border of the input image, some elements of its neighbourhood is not defined. Hence the mask cannot be applied. To circumvent this issue, one of the following two approaches can be used :
 
-Zero Padding : The undefined pixels are assumed to be zero and the mask can be applied. For example: An input image of size MXN and filter size mXn, the output image size will be (M+(m-1)/2) X (N+(n-1)/2)
+1. Zero Padding : The undefined pixels are assumed to be zero and the mask can be applied. For example: An input image of size MXN and filter size mXn, the output image size will be (M+(m-1)/2) X (N+(n-1)/2)
 
-Repetition : The border pixels in input image are repeated, so that the neighbourhood is always defined and mask can be applied.
+2. Repetition : The border pixels in input image are repeated, so that the neighbourhood is always defined and mask can be applied.
 
 An example demonstrating Zero-Padding and repitition of border pixels is shown below:
 
