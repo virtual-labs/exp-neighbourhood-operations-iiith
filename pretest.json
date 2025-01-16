@@ -1,0 +1,19 @@
+[
+{"question":"1. After performing a filtering operation, the size of the input and output images will",
+"answers":{
+            "a":"Remain the same",
+            "b":"Be different",
+            "c":"Depends on filter type",
+            "d":"Cannot say"
+          },
+"correctAnswer":"a"},
+
+{"question":"2. If the size of an averaging filter (window) is increased the processed image will be",
+"answers":{
+            "a":"Sharper",
+            "b":"Smoother",
+            "c":"Brighter",
+            "d":"Darker"
+          },
+"correctAnswer":"c"} 
+]

@@ -1,0 +1,20 @@
+[
+{"question":"1. Which of the following filter is non-linear filter",
+"answers":{
+            "a":"Gaussian filter",
+            "b":"Average filter",
+            "c":"Median filter",
+            "d":"Triangular filter"
+          },
+"correctAnswer":"a"},
+
+{"question":"2. Key characteristic of low pass filter is",
+"answers":{
+            "a":"All filter coefficients are greater than zero",
+            "b":"All filter coefficients are less than zero",
+            "c":"Some filter coefficients are greater than zero",
+            "d":"Some filter coefficients are less than zero"
+          },
+"correctAnswer":"c"}
+ 
+]
