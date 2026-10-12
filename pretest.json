@@ -1,0 +1,158 @@
+{
+  "version": 2.0,
+  "questions": [
+    {
+      "question": "1. In a neighbourhood operation, the output value of a pixel depends on",
+      "answers": {
+        "a": "Only the corresponding input pixel",
+        "b": "The pixel and its neighbouring pixels",
+        "c": "Only the image dimensions",
+        "d": "Only the image file format"
+      },
+      "correctAnswer": "b",
+      "explanations": {
+        "a": "Incorrect. Using only the corresponding input pixel describes a point operation rather than the neighbourhood operation studied here.",
+        "b": "Correct. A neighbourhood operation uses a local neighbourhood around the current pixel to compute the output value.",
+        "c": "Incorrect. Image dimensions determine the size of the image but do not by themselves determine the output pixel value.",
+        "d": "Incorrect. The file format does not define how neighbouring pixel values are combined."
+      },
+      "difficulty": "beginner"
+    },
+    {
+      "question": "2. What is the purpose of a window or mask in a neighbourhood operation?",
+      "answers": {
+        "a": "To select a local set of pixels around the current pixel",
+        "b": "To change the image file format",
+        "c": "To increase the image dimensions automatically",
+        "d": "To store the entire input image"
+      },
+      "correctAnswer": "a",
+      "explanations": {
+        "a": "Correct. A window or mask identifies the local neighbourhood of pixels on which the neighbourhood operation is performed.",
+        "b": "Incorrect. A window or mask defines the pixels used for processing and does not determine the image file format.",
+        "c": "Incorrect. The window size specifies the local processing region and does not automatically increase the image dimensions.",
+        "d": "Incorrect. A window or mask represents only a local processing region, not the entire input image."
+      },
+      "difficulty": "beginner"
+    },
+    {
+      "question": "3. Which type of neighbourhood operation computes an output using a weighted combination of pixels in the local neighbourhood?",
+      "answers": {
+        "a": "Nonlinear ranking operation",
+        "b": "Median operation",
+        "c": "Linear filtering operation",
+        "d": "File conversion operation"
+      },
+      "correctAnswer": "c",
+      "explanations": {
+        "a": "Incorrect. A ranking operation is an example of a nonlinear neighbourhood operation.",
+        "b": "Incorrect. A median operation determines the median of neighbourhood gray values and is treated as a nonlinear operation in the experiment.",
+        "c": "Correct. Linear filtering uses the values in the local neighbourhood together with filter coefficients in a weighted combination.",
+        "d": "Incorrect. File conversion is not a neighbourhood operation."
+      },
+      "difficulty": "beginner"
+    },
+    {
+      "question": "4. A $3 \\times 3$ filter has all nine coefficients equal to $\\frac{1}{9}$. What type of operation does this filter represent?",
+      "answers": {
+        "a": "Median filtering",
+        "b": "Straight averaging filtering",
+        "c": "Unsharp masking",
+        "d": "Image thresholding"
+      },
+      "correctAnswer": "b",
+      "explanations": {
+        "a": "Incorrect. Median filtering uses a ranking operation on neighbourhood gray values rather than equal filter coefficients.",
+        "b": "Correct. Equal coefficients of $\\frac{1}{9}$ assign equal weight to all nine pixels and perform local averaging.",
+        "c": "Incorrect. Unsharp masking is used to highlight image details and does not correspond to a $3 \\times 3$ filter with all coefficients equal to $\\frac{1}{9}$.",
+        "d": "Incorrect. Thresholding is not the filtering operation represented by these equal coefficients."
+      },
+      "difficulty": "intermediate"
+    },
+    {
+      "question": "5. If the size of an averaging neighbourhood is increased, the processed image will generally become",
+      "answers": {
+        "a": "Smoother",
+        "b": "More dependent on only the centre pixel",
+        "c": "Converted into a binary image",
+        "d": "Unaffected by the neighbourhood size"
+      },
+      "correctAnswer": "a",
+      "explanations": {
+        "a": "Correct. A larger averaging neighbourhood combines information over a larger local region, producing greater smoothing.",
+        "b": "Incorrect. Increasing the neighbourhood size includes more surrounding pixels in the averaging operation.",
+        "c": "Incorrect. Changing the averaging neighbourhood size does not convert the image into a binary image.",
+        "d": "Incorrect. The experiment specifically studies how changing neighbourhood size affects the processed image."
+      },
+      "difficulty": "intermediate"
+    },
+    {
+      "question": "6. Which statement describes the median filter discussed in the Neighbourhood Operations experiment?",
+      "answers": {
+        "a": "It computes a weighted sum of neighbourhood pixels",
+        "b": "It assigns the maximum gray value in the neighbourhood",
+        "c": "It uses only the centre pixel",
+        "d": "It computes the median of the gray values in the neighbourhood"
+      },
+      "correctAnswer": "d",
+      "explanations": {
+        "a": "Incorrect. A weighted sum is characteristic of the linear filtering formulation, not the median operation.",
+        "b": "Incorrect. Selecting the maximum value is not the median operation described in the experiment.",
+        "c": "Incorrect. The median filter uses the set of gray values in the neighbourhood rather than only the centre pixel.",
+        "d": "Correct. The median filter sorts the gray values in the local neighbourhood and uses their median as the output value."
+      },
+      "difficulty": "intermediate"
+    },
+    {
+      "question": "7. A low pass filter is used to smooth an image. According to the experiment, which property characterizes its filter coefficients?",
+      "answers": {
+        "a": "Every coefficient is less than zero",
+        "b": "Every coefficient is greater than zero",
+        "c": "Every coefficient must be equal to zero",
+        "d": "The coefficients must alternate between positive and negative values"
+      },
+      "correctAnswer": "b",
+      "explanations": {
+        "a": "Incorrect. Coefficients with this property would not satisfy the positive-coefficient characteristic given for the low pass filter in the experiment.",
+        "b": "Correct. The experiment states that a low pass filter used for local averaging or smoothing has $w(i,j) > 0$ for every $(i,j)$.",
+        "c": "Incorrect. Zero coefficients would not perform the local averaging described for the low pass filter.",
+        "d": "Incorrect. Alternating signs are not the coefficient property specified for the low pass filter in the experiment."
+      },
+      "difficulty": "advanced"
+    },
+    {
+      "question": "8. Consider the linear neighbourhood operation $g(x,y) = \\sum_{u=-a}^{a} \\sum_{v=-b}^{b} w(u,v)f(x+u,y+v)$. What does $w(u,v)$ represent?",
+      "answers": {
+        "a": "The output image size",
+        "b": "The input image dimensions",
+        "c": "The filter coefficient or weight at a neighbourhood location",
+        "d": "The coordinates of the output image only"
+      },
+      "correctAnswer": "c",
+      "explanations": {
+        "a": "Incorrect. The output image size is not represented by an individual filter coefficient in the convolution expression.",
+        "b": "Incorrect. The input image dimensions are not represented by $w(u,v)$.",
+        "c": "Correct. $w(u,v)$ is the filter coefficient or weight associated with the neighbourhood location $(u,v)$.",
+        "d": "Incorrect. The coordinates $(u,v)$ identify positions within the filter neighbourhood, while $w(u,v)$ gives the corresponding weight."
+      },
+      "difficulty": "advanced"
+    },
+    {
+      "question": "9. Why is a special method needed when a neighbourhood window reaches the border of an image?",
+      "answers": {
+        "a": "Some pixels required by the window lie outside the defined image",
+        "b": "The centre pixel becomes automatically brighter",
+        "c": "The filter coefficients become undefined",
+        "d": "The image must always be converted to a colour image"
+      },
+      "correctAnswer": "a",
+      "explanations": {
+        "a": "Correct. At an image border, part of the neighbourhood may lie outside the image, so those required pixel values are not directly defined.",
+        "b": "Incorrect. Reaching an image border does not automatically change the intensity of the centre pixel.",
+        "c": "Incorrect. The filter coefficients are defined by the selected filter; the issue concerns unavailable image pixels near the border.",
+        "d": "Incorrect. Border handling does not require converting the image to a colour image."
+      },
+      "difficulty": "advanced"
+    }
+  ]
+}

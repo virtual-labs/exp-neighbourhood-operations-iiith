@@ -1,0 +1,158 @@
+{
+  "version": 2.0,
+  "questions": [
+    {
+      "question": "1. What is the main difference between a point operation and a neighbourhood operation?",
+      "answers": {
+        "a": "A neighbourhood operation uses information from surrounding pixels",
+        "b": "A neighbourhood operation can be applied only to colour images",
+        "c": "A point operation always changes the image dimensions",
+        "d": "A point operation requires a filter matrix"
+      },
+      "correctAnswer": "a",
+      "explanations": {
+        "a": "Correct. A neighbourhood operation computes an output pixel using a local neighbourhood, whereas a point operation uses the corresponding input pixel.",
+        "b": "Incorrect. The distinction between the two operations is based on how pixel information is used, not on whether the image is colour or grayscale.",
+        "c": "Incorrect. Point operations do not inherently change the image dimensions.",
+        "d": "Incorrect. A filter matrix is used for linear neighbourhood operations, but it is not a requirement of point operations."
+      },
+      "difficulty": "beginner"
+    },
+    {
+      "question": "2. Which of the following is a linear neighbourhood operation discussed in the experiment?",
+      "answers": {
+        "a": "Median filtering",
+        "b": "Gaussian filtering",
+        "c": "Image file conversion",
+        "d": "Pixel threshold selection"
+      },
+      "correctAnswer": "b",
+      "explanations": {
+        "a": "Incorrect. The experiment classifies the median filter as a nonlinear neighbourhood operation.",
+        "b": "Correct. Gaussian filtering is presented as a linear filtering operation using filter coefficients in a convolution.",
+        "c": "Incorrect. File conversion is not a neighbourhood operation.",
+        "d": "Incorrect. Pixel threshold selection is not the linear filtering operation described in the experiment."
+      },
+      "difficulty": "beginner"
+    },
+    {
+      "question": "3. Which filter is described as a nonlinear neighbourhood operation in the experiment?",
+      "answers": {
+        "a": "Straight averaging filter",
+        "b": "Triangular filter",
+        "c": "Gaussian filter",
+        "d": "Median filter"
+      },
+      "correctAnswer": "d",
+      "explanations": {
+        "a": "Incorrect. The straight averaging filter is presented as a linear filter.",
+        "b": "Incorrect. The triangular filter is presented among the linear filters.",
+        "c": "Incorrect. The Gaussian filter is presented as a linear filter.",
+        "d": "Correct. The median filter is a nonlinear operation because it uses a ranking operation on the neighbourhood values."
+      },
+      "difficulty": "beginner"
+    },
+    {
+      "question": "4. For a $3 \\times 3$ averaging filter, each coefficient is equal and the coefficients sum to $1$. What is the value of each coefficient?",
+      "answers": {
+        "a": "$\\frac{1}{3}$",
+        "b": "$\\frac{1}{6}$",
+        "c": "$\\frac{1}{9}$",
+        "d": "$1$"
+      },
+      "correctAnswer": "c",
+      "explanations": {
+        "a": "Incorrect. Nine equal coefficients with this value would make their total greater than $1$.",
+        "b": "Incorrect. Nine equal coefficients with this value would not sum to $1$.",
+        "c": "Correct. There are nine equal coefficients, so each coefficient is $\\frac{1}{9}$ to make their sum equal to $1$.",
+        "d": "Incorrect. If every one of the nine coefficients were $1$, their sum would not be $1$."
+      },
+      "difficulty": "intermediate"
+    },
+    {
+      "question": "5. An image contains isolated black and white pixels caused by salt-and-pepper noise. Which operation described in the experiment is particularly useful for removing this type of noise?",
+      "answers": {
+        "a": "Median filtering",
+        "b": "Triangular filtering only",
+        "c": "Increasing the image dimensions",
+        "d": "Changing the file format"
+      },
+      "correctAnswer": "a",
+      "explanations": {
+        "a": "Correct. The experiment describes median filtering as a nonlinear operation that can effectively remove isolated salt-and-pepper noise.",
+        "b": "Incorrect. The experiment does not identify the triangular filter as the specific nonlinear operation used to remove salt-and-pepper noise.",
+        "c": "Incorrect. Changing image dimensions does not by itself remove isolated noisy pixels.",
+        "d": "Incorrect. Changing the file format does not perform the neighbourhood filtering needed to remove this noise."
+      },
+      "difficulty": "intermediate"
+    },
+    {
+      "question": "6. In a linear neighbourhood operation, what is the role of the centre coefficient $w(0,0)$?",
+      "answers": {
+        "a": "It specifies the image width",
+        "b": "It is the coefficient applied at the position of the current pixel",
+        "c": "It specifies the number of image channels",
+        "d": "It determines the border size automatically"
+      },
+      "correctAnswer": "b",
+      "explanations": {
+        "a": "Incorrect. Image width is not represented by the centre coefficient of a filter.",
+        "b": "Correct. $w(0,0)$ is the coefficient at the centre of the window, corresponding to the position of the current pixel.",
+        "c": "Incorrect. The number of image channels is unrelated to the centre coefficient of the filter.",
+        "d": "Incorrect. The centre coefficient does not by itself determine how image borders are handled."
+      },
+      "difficulty": "intermediate"
+    },
+    {
+      "question": "7. A $3 \\times 3$ neighbourhood window is applied to a pixel at the border of an image. What problem occurs if no border-handling method is used?",
+      "answers": {
+        "a": "Some pixels required by the window are outside the image",
+        "b": "All filter coefficients become negative",
+        "c": "The centre pixel is removed from the image",
+        "d": "The filter automatically becomes nonlinear"
+      },
+      "correctAnswer": "a",
+      "explanations": {
+        "a": "Correct. Part of the $3 \\times 3$ neighbourhood can lie outside the image at a border, so the required input values are unavailable.",
+        "b": "Incorrect. The filter coefficients do not change sign merely because the window reaches an image border.",
+        "c": "Incorrect. Border handling concerns unavailable neighbourhood pixels and does not remove the centre pixel.",
+        "d": "Incorrect. Reaching an image border does not change a linear filter into a nonlinear operation."
+      },
+      "difficulty": "advanced"
+    },
+    {
+      "question": "8. Suppose a neighbourhood filter has positive coefficients whose sum is $1$. Which effect is most consistent with the low pass filters described in the experiment?",
+      "answers": {
+        "a": "Local smoothing of the image",
+        "b": "Guaranteed conversion to a binary image",
+        "c": "Removal of all image information",
+        "d": "Dependence only on the centre pixel"
+      },
+      "correctAnswer": "a",
+      "explanations": {
+        "a": "Correct. The experiment describes local averaging or smoothing as a low pass filtering operation with positive coefficients and a coefficient sum of $1$.",
+        "b": "Incorrect. Low pass filtering does not imply that the output will be binary.",
+        "c": "Incorrect. Smoothing modifies local intensity variations but does not remove all image information.",
+        "d": "Incorrect. A neighbourhood filter uses multiple pixels in its local window rather than only the centre pixel."
+      },
+      "difficulty": "advanced"
+    },
+    {
+      "question": "9. Which statement best distinguishes the Gaussian filter from the median filter as presented in the experiment?",
+      "answers": {
+        "a": "The Gaussian filter is nonlinear, while the median filter is linear",
+        "b": "Both filters use exactly the same type of operation",
+        "c": "The Gaussian filter uses weighted linear filtering, while the median filter uses a nonlinear ranking operation",
+        "d": "The Gaussian filter uses only the centre pixel, while the median filter uses the whole image"
+      },
+      "correctAnswer": "c",
+      "explanations": {
+        "a": "Incorrect. This reverses the classification of these two filters given in the experiment.",
+        "b": "Incorrect. The experiment distinguishes these filters by the different ways they combine neighbourhood pixel values.",
+        "c": "Correct. The Gaussian filter is presented as a linear filter using coefficients in a convolution, while the median filter uses a nonlinear ranking operation.",
+        "d": "Incorrect. Both operations work on local neighbourhoods; neither is defined in the experiment as using only the centre pixel or the whole image."
+      },
+      "difficulty": "advanced"
+    }
+  ]
+}

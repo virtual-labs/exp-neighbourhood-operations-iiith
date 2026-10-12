@@ -1,0 +1,1078 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Neighbourhood Operations Simulation</title>
+    <link rel="icon" href="data:," />
+    <style>
+      :root {
+        --bg: #f3f5f8;
+        --panel: #ffffff;
+        --border: #d4d9e0;
+        --accent: #1f6feb;
+        --muted: #5d6470;
+        --shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: "Segoe UI", Tahoma, sans-serif;
+        background: var(--bg);
+        color: #1f2937;
+      }
+
+      .app {
+        max-width: 1200px;
+        margin: 28px auto;
+        padding: 20px;
+      }
+
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 20px;
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        box-shadow: var(--shadow);
+        padding: 16px 20px;
+      }
+
+      .toolbar {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      button {
+        appearance: none;
+        border: 1px solid var(--border);
+        background: #f8fafc;
+        color: #111827;
+        padding: 10px 16px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+      }
+
+      button.primary {
+        background: var(--accent);
+        border-color: var(--accent);
+        color: white;
+      }
+
+      .workspace {
+        display: grid;
+        grid-template-columns: 1.3fr 0.8fr 0.8fr;
+        gap: 18px;
+      }
+
+      .panel {
+        background: var(--panel);
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow);
+        border-radius: 12px;
+        padding: 14px;
+        min-height: 260px;
+      }
+
+      .panel h3 {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        gap: 8px;
+        margin: 0 0 12px;
+        font-size: 1.1rem;
+      }
+
+      .dims {
+        font-size: 0.85rem;
+        font-weight: 500;
+        color: var(--muted);
+      }
+
+      .mosaic-wrap {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 300px;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        background: #293541;
+        overflow: hidden;
+        touch-action: none;
+      }
+
+      #Mosaic {
+        position: relative;
+      }
+
+      #Mosaic-img {
+        position: relative;
+        z-index: 1;
+        display: block;
+        max-width: 100%;
+        max-height: 420px;
+        border-radius: 8px;
+        user-select: none;
+        -webkit-user-drag: none;
+        touch-action: none;
+      }
+
+      .selection-overlay {
+        position: absolute;
+        border: 2px solid #3b82f6;
+        background: rgba(59, 130, 246, 0.18);
+        pointer-events: none;
+        display: none;
+        z-index: 20;
+      }
+
+      .image-box {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 240px;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        background: linear-gradient(180deg, #f8fafc, #eef2f7);
+        overflow: hidden;
+      }
+
+      .image-box img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        border-radius: inherit;
+      }
+
+      .controls {
+        margin-top: 18px;
+        display: grid;
+        grid-template-columns: 0.9fr 1.1fr;
+        gap: 20px;
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        box-shadow: var(--shadow);
+        padding: 16px 18px;
+      }
+
+      .group {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        min-width: 0;
+      }
+
+      .group h3 {
+        margin: 0 0 6px;
+      }
+
+      .group label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--muted);
+      }
+
+      .inline-options {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px 18px;
+      }
+
+      fieldset {
+        margin: 0;
+        padding: 10px 12px 12px;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+      }
+
+      legend {
+        padding: 0 6px;
+        font-weight: 600;
+      }
+
+      .slider-row {
+        display: grid;
+        grid-template-columns: 9.5rem 1fr 4.5rem;
+        align-items: center;
+        gap: 10px;
+        margin-top: 6px;
+        color: var(--muted);
+      }
+
+      .slider-row input[type="range"] {
+        width: 100%;
+      }
+
+      .slider-row input[type="number"] {
+        width: 100%;
+        padding: 4px 6px;
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        font: inherit;
+      }
+
+      .hint {
+        margin: 6px 0 0;
+        font-size: 0.85rem;
+        color: var(--muted);
+      }
+
+      .equation {
+        margin: 4px 0 0;
+        padding: 8px 10px;
+        border-radius: 8px;
+        background: #f8fafc;
+        border: 1px solid var(--border);
+        font-family: Consolas, "Courier New", monospace;
+        font-size: 0.9rem;
+        overflow-wrap: anywhere;
+      }
+
+      .option-list {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      .kernel-wrap {
+        overflow-x: auto;
+      }
+
+      .kernel {
+        border-collapse: collapse;
+        margin-top: 6px;
+        font-family: Consolas, "Courier New", monospace;
+        font-size: 0.85rem;
+      }
+
+      .kernel td {
+        min-width: 2.6rem;
+        padding: 4px 6px;
+        border: 1px solid var(--border);
+        text-align: center;
+        background: #f8fafc;
+      }
+
+      .steps {
+        margin-top: 18px;
+      }
+
+      .steps-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      .steps-grid figure {
+        margin: 0;
+        width: 150px;
+        text-align: center;
+        font-size: 0.85rem;
+        color: var(--muted);
+      }
+
+      .steps-grid img {
+        display: block;
+        width: 150px;
+        height: 150px;
+        object-fit: contain;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        background: #eef2f7;
+      }
+
+      .status {
+        margin-top: 16px;
+        padding: 10px 12px;
+        border-radius: 8px;
+        background: #eff6ff;
+        color: #1d4ed8;
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+      }
+
+      @media (max-width: 900px) {
+        .app {
+          margin: 0 auto;
+          padding: 16px;
+        }
+
+        .topbar {
+          flex-direction: column;
+          align-items: stretch;
+        }
+
+        .workspace,
+        .controls {
+          grid-template-columns: 1fr;
+        }
+
+        .slider-row {
+          grid-template-columns: 1fr 4.5rem;
+        }
+
+        .slider-row > span {
+          grid-column: 1 / -1;
+        }
+
+        .kernel {
+          font-size: 0.72rem;
+        }
+
+        .kernel td {
+          min-width: 0;
+          padding: 3px 3px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="app">
+      <div class="topbar">
+        <div class="toolbar">
+          <button id="button1" type="button">Select Image</button>
+          <button id="button4" type="button">Reset</button>
+          <button id="button2" type="button" class="primary">Run</button>
+        </div>
+        <div id="status" class="status">OpenCV is being initialized…</div>
+      </div>
+
+      <div class="workspace">
+        <div id="Mosaic" class="panel">
+          <h3>Mosaic</h3>
+          <div class="mosaic-wrap">
+            <img
+              id="Mosaic-img"
+              src="images/Mosaic.png"
+              alt="Mosaic"
+              draggable="false"
+            />
+          </div>
+        </div>
+
+        <div class="panel">
+          <h3>Input Image <span id="inputDims" class="dims">— × —</span></h3>
+          <div class="image-box">
+            <img id="layer4Image" src="images/Layer-4.jpg" alt="Selected input" />
+          </div>
+        </div>
+
+        <div class="panel">
+          <h3>
+            Output Image <span id="outputDims" class="dims">— × —</span>
+          </h3>
+          <div class="image-box">
+            <img id="layer5outputImage" src="images/Layer-5.jpg" alt="Output" />
+          </div>
+        </div>
+      </div>
+
+      <div class="controls">
+        <div class="group">
+          <h3>Filter</h3>
+          <fieldset>
+            <legend>Linear filtering</legend>
+            <div class="option-list">
+              <label
+                ><input type="radio" name="filter" value="average" checked />
+                Straight average</label
+              >
+              <label
+                ><input type="radio" name="filter" value="triangular" />
+                Triangular average</label
+              >
+              <label
+                ><input type="radio" name="filter" value="gaussian" />
+                Gaussian average</label
+              >
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Non-linear filtering</legend>
+            <div class="option-list">
+              <label
+                ><input type="radio" name="filter" value="median" /> Median
+                filter</label
+              >
+              <label
+                ><input type="radio" name="filter" value="unsharp" /> Unsharp
+                masking</label
+              >
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Neighbourhood size</legend>
+            <div class="inline-options">
+              <label
+                ><input type="radio" name="size" value="3" checked /> 3 ×
+                3</label
+              >
+              <label
+                ><input type="radio" name="size" value="5" /> 5 × 5</label
+              >
+              <label
+                ><input type="radio" name="size" value="7" /> 7 × 7</label
+              >
+            </div>
+          </fieldset>
+
+          <fieldset id="alphaGroup" hidden>
+            <legend>Enhancement strength</legend>
+            <div class="slider-row">
+              <span>α</span>
+              <input id="alpha" type="range" min="0.5" max="3" step="0.5" value="1.5" />
+              <input id="alphaValue" type="number" min="0.5" max="3" step="0.5" value="1.5" aria-label="Unsharp masking strength alpha" />
+            </div>
+          </fieldset>
+        </div>
+
+        <div class="group">
+          <h3>Filter Definition</h3>
+          <p id="filterFormula" class="equation"></p>
+          <div class="kernel-wrap">
+            <p id="kernelCaption" class="hint"></p>
+            <table id="kernelTable" class="kernel"></table>
+          </div>
+          <p class="hint">
+            Image borders are handled by mirroring the pixels next to the edge.
+          </p>
+        </div>
+      </div>
+
+      <div class="panel steps">
+        <h3>Intermediate Results</h3>
+        <div id="stepsGrid" class="steps-grid">
+          <p class="hint">Run a filter to see the result here.</p>
+        </div>
+      </div>
+    </div>
+
+    <script type="text/javascript" src="js/opencv.js"></script>
+    <script type="text/javascript">
+      const app = {
+        mosaicMat: null,
+        inputGray: null,
+        processedImage: null,
+        selection: null,
+        dragging: false,
+        startPoint: null,
+        currentPoint: null,
+      };
+
+      const mosaic = document.getElementById("Mosaic");
+      const mosaicWrap = document.querySelector(".mosaic-wrap");
+      const mosaicImg = document.getElementById("Mosaic-img");
+      const inputImg = document.getElementById("layer4Image");
+      const outputImg = document.getElementById("layer5outputImage");
+      const statusEl = document.getElementById("status");
+      const selectionOverlay = document.createElement("div");
+      selectionOverlay.className = "selection-overlay";
+      mosaicWrap.appendChild(selectionOverlay);
+
+      function safeDelete(mat) {
+        if (mat && typeof mat.delete === "function" && !mat.isDeleted()) {
+          mat.delete();
+        }
+      }
+
+      function setStatus(message, isError) {
+        statusEl.textContent = message;
+        statusEl.style.background = isError ? "#fef2f2" : "#eff6ff";
+        statusEl.style.color = isError ? "#b91c1c" : "#1d4ed8";
+      }
+
+      function clamp(value, min, max) {
+        return Math.min(Math.max(value, min), max);
+      }
+
+      /* ---------- Mosaic selection (native pointer / touch events) ---------- */
+
+      function placeSelectionOverlay(displayX, displayY, displayW, displayH) {
+        const wrapRect = mosaicWrap.getBoundingClientRect();
+        const imageRect = mosaicImg.getBoundingClientRect();
+        const offsetX = imageRect.left - wrapRect.left;
+        const offsetY = imageRect.top - wrapRect.top;
+
+        selectionOverlay.style.left = offsetX + displayX + "px";
+        selectionOverlay.style.top = offsetY + displayY + "px";
+        selectionOverlay.style.width = displayW + "px";
+        selectionOverlay.style.height = displayH + "px";
+      }
+
+      function getSelectionPoint(event) {
+        const source = event.touches?.[0] || event.changedTouches?.[0] || event;
+        return {
+          clientX: source.clientX,
+          clientY: source.clientY,
+        };
+      }
+
+      function beginSelection(event) {
+        if (app.dragging) return;
+        if (
+          event.type === "mousedown" &&
+          event.button !== 0 &&
+          event.which !== 1
+        ) {
+          return;
+        }
+        event.preventDefault();
+
+        const point = getSelectionPoint(event);
+        const rect = mosaicImg.getBoundingClientRect();
+        const localX = clamp(point.clientX - rect.left, 0, rect.width);
+        const localY = clamp(point.clientY - rect.top, 0, rect.height);
+
+        app.dragging = true;
+        app.startPoint = {
+          x: localX * (mosaicImg.naturalWidth / rect.width),
+          y: localY * (mosaicImg.naturalHeight / rect.height),
+        };
+        app.currentPoint = { ...app.startPoint };
+
+        placeSelectionOverlay(localX, localY, 0, 0);
+        selectionOverlay.style.display = "block";
+
+        setStatus("Drag across the mosaic to create a crop region.");
+      }
+
+      function moveSelection(event) {
+        if (!app.dragging || !app.startPoint) return;
+
+        event.preventDefault();
+        const point = getSelectionPoint(event);
+
+        const rect = mosaicImg.getBoundingClientRect();
+        const scaleX = mosaicImg.naturalWidth / rect.width;
+        const scaleY = mosaicImg.naturalHeight / rect.height;
+        const localX = clamp(point.clientX - rect.left, 0, rect.width);
+        const localY = clamp(point.clientY - rect.top, 0, rect.height);
+
+        const x = localX * scaleX;
+        const y = localY * scaleY;
+        app.currentPoint = { x, y };
+
+        const x1 = Math.min(app.startPoint.x, x);
+        const y1 = Math.min(app.startPoint.y, y);
+        const x2 = Math.max(app.startPoint.x, x);
+        const y2 = Math.max(app.startPoint.y, y);
+
+        placeSelectionOverlay(
+          x1 / scaleX,
+          y1 / scaleY,
+          (x2 - x1) / scaleX,
+          (y2 - y1) / scaleY,
+        );
+      }
+
+      function finalizeSelection(event) {
+        if (!app.dragging) return;
+
+        if (event) {
+          event.preventDefault();
+          moveSelection(event);
+        }
+
+        const x1 = Math.min(app.startPoint.x, app.currentPoint.x);
+        const y1 = Math.min(app.startPoint.y, app.currentPoint.y);
+        const x2 = Math.max(app.startPoint.x, app.currentPoint.x);
+        const y2 = Math.max(app.startPoint.y, app.currentPoint.y);
+
+        app.dragging = false;
+        selectionOverlay.style.display = "none";
+
+        if (x2 - x1 < 5 || y2 - y1 < 5) {
+          setStatus(
+            "Selection is too small. Drag a larger region on the mosaic.",
+            true,
+          );
+          return;
+        }
+
+        const left = clamp(Math.round(x1), 0, mosaicImg.naturalWidth - 1);
+        const top = clamp(Math.round(y1), 0, mosaicImg.naturalHeight - 1);
+        app.selection = {
+          x1: left,
+          y1: top,
+          width: clamp(Math.round(x2 - x1), 1, mosaicImg.naturalWidth - left),
+          height: clamp(Math.round(y2 - y1), 1, mosaicImg.naturalHeight - top),
+        };
+
+        cropFromSelection(app.selection);
+      }
+
+      function setupMosaicSelection() {
+        mosaicImg.addEventListener("pointerdown", (event) => {
+          beginSelection(event);
+          if (app.dragging && mosaicImg.setPointerCapture) {
+            mosaicImg.setPointerCapture(event.pointerId);
+          }
+        });
+        mosaicImg.addEventListener("pointermove", moveSelection);
+        mosaicImg.addEventListener("pointerup", finalizeSelection);
+        mosaicImg.addEventListener("pointercancel", finalizeSelection);
+        mosaicImg.addEventListener("mousedown", beginSelection);
+        mosaicImg.addEventListener("mousemove", moveSelection);
+        window.addEventListener("mouseup", finalizeSelection);
+        mosaicImg.addEventListener("touchstart", beginSelection, {
+          passive: false,
+        });
+        mosaicImg.addEventListener("touchmove", moveSelection, {
+          passive: false,
+        });
+        mosaicImg.addEventListener("touchend", finalizeSelection, {
+          passive: false,
+        });
+        mosaicImg.addEventListener("touchcancel", finalizeSelection, {
+          passive: false,
+        });
+      }
+
+      /* ---------- Image I/O ---------- */
+
+      function loadImage(url) {
+        return new Promise((resolve, reject) => {
+          const img = new Image();
+          img.crossOrigin = "Anonymous";
+          img.onload = () => {
+            const canvas = document.createElement("canvas");
+            canvas.width = img.width;
+            canvas.height = img.height;
+            const ctx = canvas.getContext("2d");
+            ctx.drawImage(img, 0, 0);
+            const imageData = ctx.getImageData(0, 0, img.width, img.height);
+            const mat = new cv.Mat(
+              imageData.height,
+              imageData.width,
+              cv.CV_8UC4,
+            );
+            mat.data.set(imageData.data);
+            resolve(mat);
+          };
+          img.onerror = (err) => reject(err);
+          img.src = url;
+        });
+      }
+
+      function matToDataUrl(mat) {
+        const canvas = document.createElement("canvas");
+        cv.imshow(canvas, mat);
+        return canvas.toDataURL();
+      }
+
+      function setDims(id, width, height) {
+        document.getElementById(id).textContent =
+          width && height ? width + " × " + height : "— × —";
+      }
+
+      function cropFromSelection(selection) {
+        if (!app.mosaicMat) {
+          setStatus("The mosaic image has not loaded yet.", true);
+          return;
+        }
+
+        const rect = new cv.Rect(
+          selection.x1,
+          selection.y1,
+          selection.width,
+          selection.height,
+        );
+        const roi = app.mosaicMat.roi(rect);
+        const gray = new cv.Mat();
+        cv.cvtColor(roi, gray, cv.COLOR_RGBA2GRAY);
+        roi.delete();
+
+        safeDelete(app.inputGray);
+        app.inputGray = gray;
+        inputImg.src = matToDataUrl(gray);
+        setDims("inputDims", gray.cols, gray.rows);
+
+        safeDelete(app.processedImage);
+        app.processedImage = null;
+        outputImg.src = "images/Layer-5.jpg";
+        setDims("outputDims");
+        clearSteps();
+
+        setStatus(
+          "Input region selected (" +
+            gray.cols +
+            " × " +
+            gray.rows +
+            "). Choose a filter and neighbourhood size, then click Run.",
+        );
+      }
+
+      /* ---------- Controls ---------- */
+
+      function getCheckedValue(name) {
+        return document.querySelector('input[name="' + name + '"]:checked')
+          ?.value;
+      }
+
+      function setChecked(name, value) {
+        document.querySelector(
+          'input[name="' + name + '"][value="' + value + '"]',
+        ).checked = true;
+      }
+
+      function bindSliderPair(id) {
+        const range = document.getElementById(id);
+        const number = document.getElementById(id + "Value");
+        range.addEventListener("input", () => {
+          number.value = range.value;
+          updateFilterView();
+        });
+        number.addEventListener("change", () => {
+          const step = Number(number.step);
+          const value = clamp(
+            Math.round((Number(number.value) || 0) / step) * step,
+            Number(number.min),
+            Number(number.max),
+          );
+          number.value = value;
+          range.value = value;
+          updateFilterView();
+        });
+      }
+
+      function readParams() {
+        return {
+          filter: getCheckedValue("filter") || "average",
+          size: Number(getCheckedValue("size") || 3),
+          alpha: Number(document.getElementById("alphaValue").value),
+        };
+      }
+
+      function resetControls() {
+        setChecked("filter", "average");
+        setChecked("size", "3");
+        document.getElementById("alpha").value = 1.5;
+        document.getElementById("alphaValue").value = 1.5;
+        updateFilterView();
+      }
+
+      /* ---------- Filters ---------- */
+
+      // Sigma OpenCV uses for a Gaussian of the given size when none is given.
+      function gaussianSigma(size) {
+        return 0.3 * ((size - 1) * 0.5 - 1) + 0.8;
+      }
+
+      // 1-D weights; the 2-D kernel is their outer product.
+      function kernel1d(filter, size) {
+        const half = (size - 1) / 2;
+        const weights = [];
+        for (let i = 0; i < size; i++) {
+          const d = Math.abs(i - half);
+          if (filter === "triangular") weights.push(half + 1 - d);
+          else if (filter === "average") weights.push(1);
+          else {
+            const sigma = gaussianSigma(size);
+            weights.push(Math.exp(-(d * d) / (2 * sigma * sigma)));
+          }
+        }
+        return weights;
+      }
+
+      // Normalised 2-D kernel (weights sum to 1) plus an integer form for
+      // display where one exists.
+      function buildKernel(filter, size) {
+        const w = kernel1d(filter, size);
+        const raw = w.map((a) => w.map((b) => a * b));
+        const total = raw.flat().reduce((s, v) => s + v, 0);
+        return {
+          weights: raw.map((row) => row.map((v) => v / total)),
+          integers: filter === "gaussian" ? null : raw,
+          divisor: total,
+        };
+      }
+
+      function convolve(src, kernel) {
+        const size = kernel.weights.length;
+        const k = cv.matFromArray(size, size, cv.CV_32F, kernel.weights.flat());
+        const dst = new cv.Mat();
+        cv.filter2D(
+          src,
+          dst,
+          -1,
+          k,
+          new cv.Point(-1, -1),
+          0,
+          cv.BORDER_REFLECT_101,
+        );
+        k.delete();
+        return dst;
+      }
+
+      // Returns the output plus any intermediate images worth showing.
+      function applyFilter(src, params) {
+        const { filter, size, alpha } = params;
+
+        if (filter === "median") {
+          const dst = new cv.Mat();
+          cv.medianBlur(src, dst, size);
+          return { output: dst, steps: [] };
+        }
+
+        if (filter === "unsharp") {
+          // f_s = f + α (f − f̂), with f̂ a Gaussian-smoothed copy of f.
+          const smoothed = convolve(src, buildKernel("gaussian", size));
+          const output = new cv.Mat();
+          cv.addWeighted(src, 1 + alpha, smoothed, -alpha, 0, output);
+
+          // Detail f − f̂, shifted by 128 so negative values stay visible.
+          const detail = new cv.Mat();
+          cv.addWeighted(src, 1, smoothed, -1, 128, detail);
+
+          return {
+            output,
+            steps: [
+              { mat: smoothed, caption: "Smoothed f̂ (Gaussian " + size + " × " + size + ")" },
+              { mat: detail, caption: "Detail f − f̂ (+128)" },
+            ],
+          };
+        }
+
+        return { output: convolve(src, buildKernel(filter, size)), steps: [] };
+      }
+
+      const FILTER_LABELS = {
+        average: "Straight average",
+        triangular: "Triangular average",
+        gaussian: "Gaussian average",
+        median: "Median filter",
+        unsharp: "Unsharp masking",
+      };
+
+      function describeFilter(params) {
+        let text =
+          FILTER_LABELS[params.filter] +
+          ", " +
+          params.size +
+          " × " +
+          params.size;
+        if (params.filter === "gaussian") {
+          text += ", σ = " + gaussianSigma(params.size).toFixed(2);
+        }
+        if (params.filter === "unsharp") text += ", α = " + params.alpha;
+        return text;
+      }
+
+      function formatWeight(value) {
+        return Number(value.toFixed(3)).toString();
+      }
+
+      function renderKernelTable(kernel) {
+        const table = document.getElementById("kernelTable");
+        table.innerHTML = "";
+        const rows = kernel.integers || kernel.weights;
+        rows.forEach((row) => {
+          const tr = document.createElement("tr");
+          row.forEach((value) => {
+            const td = document.createElement("td");
+            td.textContent = kernel.integers ? value : formatWeight(value);
+            tr.appendChild(td);
+          });
+          table.appendChild(tr);
+        });
+      }
+
+      function updateFilterView() {
+        const params = readParams();
+        const formula = document.getElementById("filterFormula");
+        const caption = document.getElementById("kernelCaption");
+        const table = document.getElementById("kernelTable");
+        document.getElementById("alphaGroup").hidden =
+          params.filter !== "unsharp";
+
+        if (params.filter === "median") {
+          formula.textContent =
+            "g(x, y) = median of the " +
+            params.size * params.size +
+            " values in the " +
+            params.size +
+            " × " +
+            params.size +
+            " neighbourhood";
+          caption.textContent =
+            "Non-linear: no fixed kernel; the values are sorted and the middle one is kept.";
+          table.innerHTML = "";
+          return;
+        }
+
+        if (params.filter === "unsharp") {
+          formula.textContent =
+            "f_s = f + " + params.alpha + " · (f − f̂)";
+          caption.textContent =
+            "f̂ is the image smoothed with this Gaussian kernel (σ = " +
+            gaussianSigma(params.size).toFixed(2) +
+            "):";
+          renderKernelTable(buildKernel("gaussian", params.size));
+          return;
+        }
+
+        const kernel = buildKernel(params.filter, params.size);
+        formula.textContent =
+          "g(x, y) = Σ w(u, v) · f(x + u, y + v)";
+        caption.textContent = kernel.integers
+          ? "Kernel w = 1/" + kernel.divisor + " ×"
+          : "Kernel w (σ = " +
+            gaussianSigma(params.size).toFixed(2) +
+            ", weights sum to 1):";
+        renderKernelTable(kernel);
+      }
+
+      /* ---------- Run ---------- */
+
+      function clearSteps() {
+        document.getElementById("stepsGrid").innerHTML =
+          '<p class="hint">Run a filter to see the result here.</p>';
+      }
+
+      function addStepFigure(grid, src, caption) {
+        const figure = document.createElement("figure");
+        const img = document.createElement("img");
+        img.src = src;
+        img.alt = caption;
+        const figcaption = document.createElement("figcaption");
+        figcaption.textContent = caption;
+        figure.append(img, figcaption);
+        grid.appendChild(figure);
+      }
+
+      // Filters the current input, renders output and steps, returns params.
+      function runFilter() {
+        const params = readParams();
+        const { output, steps } = applyFilter(app.inputGray, params);
+
+        safeDelete(app.processedImage);
+        app.processedImage = output;
+        outputImg.src = matToDataUrl(output);
+        setDims("outputDims", output.cols, output.rows);
+
+        const grid = document.getElementById("stepsGrid");
+        grid.innerHTML = "";
+        addStepFigure(grid, inputImg.src, "Input");
+        steps.forEach((step) => {
+          addStepFigure(grid, matToDataUrl(step.mat), step.caption);
+          step.mat.delete();
+        });
+        addStepFigure(grid, outputImg.src, describeFilter(params));
+        return params;
+      }
+
+      function setupControls() {
+        bindSliderPair("alpha");
+        document
+          .querySelectorAll('input[name="filter"], input[name="size"]')
+          .forEach((input) =>
+            input.addEventListener("change", updateFilterView),
+          );
+        updateFilterView();
+      }
+
+      function resetSimulation() {
+        safeDelete(app.inputGray);
+        safeDelete(app.processedImage);
+        app.inputGray = null;
+        app.processedImage = null;
+        app.selection = null;
+        app.dragging = false;
+        selectionOverlay.style.display = "none";
+
+        inputImg.src = "images/Layer-4.jpg";
+        outputImg.src = "images/Layer-5.jpg";
+        setDims("inputDims");
+        setDims("outputDims");
+        clearSteps();
+        resetControls();
+
+        setStatus(
+          "Simulation reset. Select a mosaic region, choose a filter and neighbourhood size, and click Run.",
+        );
+      }
+
+      function onOpenCvReady() {
+        setupMosaicSelection();
+
+        loadImage("images/Mosaic.png")
+          .then((mat) => {
+            app.mosaicMat = mat;
+            setStatus(
+              "OpenCV is ready. Drag or touch-drag on the mosaic to select an input region.",
+            );
+          })
+          .catch((err) => {
+            console.error(err);
+            setStatus("Could not load the mosaic image.", true);
+          });
+      }
+
+      document.getElementById("button1").addEventListener("click", () => {
+        mosaic.style.display = "block";
+        mosaic.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        setStatus(
+          "Drag or touch-drag a rectangle over the mosaic to select an input region.",
+        );
+      });
+
+      document.getElementById("button2").addEventListener("click", () => {
+        if (!app.inputGray) {
+          setStatus(
+            "Please select a valid region from the mosaic first.",
+            true,
+          );
+          return;
+        }
+        const params = runFilter();
+        setStatus(
+          "Processing complete (" + describeFilter(params) + "). Output image rendered.",
+        );
+      });
+      document
+        .getElementById("button4")
+        .addEventListener("click", resetSimulation);
+
+      setupControls();
+
+      function waitForOpenCv(maxAttempts) {
+        let attempts = 0;
+        const timer = setInterval(() => {
+          attempts += 1;
+          if (window.cv && typeof window.cv.Mat !== "undefined") {
+            clearInterval(timer);
+            onOpenCvReady();
+            return;
+          }
+          if (attempts >= maxAttempts) {
+            clearInterval(timer);
+            setStatus("OpenCV did not initialize correctly.", true);
+          }
+        }, 250);
+      }
+
+      if (window.cv && typeof window.cv.Mat !== "undefined") {
+        onOpenCvReady();
+      } else {
+        waitForOpenCv(120);
+      }
+    </script>
+  </body>
+</html>

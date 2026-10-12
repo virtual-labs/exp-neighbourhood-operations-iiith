@@ -1,0 +1,1 @@
+The aim of this experiment is to study neighbourhood-based image processing using linear and non-linear filtering, and to understand how the neighbourhood size and the rule used to combine neighbouring pixel values affect the resulting image.
